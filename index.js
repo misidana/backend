@@ -21,6 +21,10 @@ connectDB();
 
 app.use(express.json());
 app.use(cors());
+
+app.get("/", async (req, res) => {
+  res.send("• Auth Features is Complete");
+});
 app.use(userRoute);
 
 const PORT = 5000 || process.env.PORT;
