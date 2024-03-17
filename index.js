@@ -3,6 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 const userRoute = require("./routes/userRoute");
+const historyRoute = require("./routes/historyRoute");
+const verifyToken = require("./middlewares/verifyToken");
 
 // Connect to MongoDB using async/await
 const connectDB = async () => {
@@ -23,9 +25,11 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  res.send("• Auth Features is Complete");
+  res.send("• Auth Features is Complete", "• Refferarl System is Complete");
 });
+
 app.use(userRoute);
+app.use("/history", verifyToken, historyRoute);
 
 const PORT = 5000 || process.env.PORT;
 app.listen(PORT, () => {

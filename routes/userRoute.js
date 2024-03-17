@@ -1,11 +1,13 @@
 const router = require("express").Router();
 const User = require("../models/userModel");
+const History = require("../models/historyModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
   try {
     const { username, email, phoneNumber, password } = req.body;
+    const refferer = req.query.refferer;
 
     const existingUsername = await User.findOne({ username });
     if (existingUsername) {
@@ -22,6 +24,23 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Phone number already exists" });
     }
 
+    if (refferer) {
+      const existingRefferer = await User.findOne({ username: refferer });
+
+      if (existingRefferer) {
+        await User.updateOne(
+          { username: refferer },
+          { $push: { reffereers: username } }
+        );
+
+        await History.create({
+          username: refferer,
+          title: "Refferal",
+          description: `User ${username} uses your referral link`,
+        });
+      }
+    }
+
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -32,6 +51,7 @@ router.post("/register", async (req, res) => {
       email,
       phoneNumber,
       password: hashedPassword,
+      refferer: refferer ? refferer : null, //pengirim undangan
     };
 
     // Save the user using user.create()
@@ -65,7 +85,10 @@ router.post("/login", async (req, res) => {
     const { password: userPassword, ...rest } = user._doc;
 
     // Create a JWT token without expiry
-    const token = jwt.sign({ id: user._id }, "CGWyAEZe1qDMxxxm1z4q+w==");
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      "CGWyAEZe1qDMxxxm1z4q+w=="
+    );
 
     // Send the token to the client
     res.status(200).json({

@@ -22,11 +22,19 @@ const userSchema = new mongoose.Schema({
   },
   balance: {
     type: Number,
-    default: null, // Nilai default adalah null
+    default: 0, // Nilai default adalah null
   },
   country: {
     type: String,
     default: null, // Nilai default adalah null
+  },
+  reffereers: {
+    type: [String], // Penerima undangan
+    default: null, // Nilai default adalah null
+  },
+  refferer: {
+    type: String, // Pengirim undangan
+    required: false, // Nilai default adalah null
   },
 });
 
