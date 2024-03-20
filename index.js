@@ -16,7 +16,7 @@ const connectDB = mongoose
     console.log(err);
   });
 
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 app.use(userRoute);
 app.use("/history", verifyToken, historyRoute);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
