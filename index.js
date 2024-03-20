@@ -1,27 +1,20 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
+const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 const app = express();
 const userRoute = require("./routes/userRoute");
 const historyRoute = require("./routes/historyRoute");
 const verifyToken = require("./middlewares/verifyToken");
 
-dotenv.config();
-
-// Connect to MongoDB using async/await
-const connectDB = async () => {
-  try {
-    await mongoose.connect(
-      "mongodb+srv://dana:fowrQ2yqc3L3QJk7@clone-p.xz9q17j.mongodb.net/Clone-p?retryWrites=true&w=majority&appName=Clone-p"
-    );
-    console.log("MongoDB Connected...");
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-connectDB();
+const connectDB = mongoose
+  .connect(process.env.DATABASE_URL)
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.use(cors());
 app.use(express.json());
@@ -33,7 +26,7 @@ app.get("/", async (req, res) => {
 app.use(userRoute);
 app.use("/history", verifyToken, historyRoute);
 
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server is listening on port " + PORT);
 });
