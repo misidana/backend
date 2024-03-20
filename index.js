@@ -19,7 +19,7 @@ const connectDB = mongoose
 app.use(cors());
 app.use(express.json());
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   res.send("• Auth Features is Complete", "• Refferarl System is Complete");
 });
 

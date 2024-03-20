@@ -6,7 +6,7 @@ const verifyToken = async (req, res, next) => {
 
   if (!token) return res.status(401).json({ message: "Access Denied" });
   try {
-    const verfyToken = jwt.verify(token, "CGWyAEZe1qDMxxxm1z4q+w==");
+    const verfyToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verfyToken;
     next();
   } catch (error) {

@@ -87,7 +87,7 @@ router.post("/login", async (req, res) => {
     // Create a JWT token without expiry
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      "CGWyAEZe1qDMxxxm1z4q+w=="
+      process.env.JWT_SECRET
     );
 
     // Send the token to the client
