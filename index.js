@@ -15,14 +15,13 @@ const connectDB = async () => {
     console.log("MongoDB Connected...");
   } catch (err) {
     console.error(err);
-    process.exit(1);
   }
 };
 
 connectDB();
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 app.get("/", async (req, res) => {
   res.send("• Auth Features is Complete", "• Refferarl System is Complete");
