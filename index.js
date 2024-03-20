@@ -20,7 +20,13 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("• Auth Features is Complete", "• Refferarl System is Complete");
+  res.status(200).json({
+    features: {
+      auth: "/login, /register",
+      reffLink: "/register?refferer=:username",
+      history: "/history",
+    },
+  });
 });
 
 app.use(userRoute);
