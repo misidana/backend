@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const app = express();
 const userRoute = require("./routes/userRoute");
 const historyRoute = require("./routes/historyRoute");
 const verifyToken = require("./middlewares/verifyToken");
+
+dotenv.config();
 
 // Connect to MongoDB using async/await
 const connectDB = async () => {
